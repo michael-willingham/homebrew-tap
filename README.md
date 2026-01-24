@@ -1,4 +1,4 @@
-# Michael-willingham Tap
+# Michael's Homebrew Tap
 
 ## How do I install these formulae?
 
