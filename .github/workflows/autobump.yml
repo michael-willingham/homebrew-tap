@@ -10,6 +10,11 @@ jobs:
   autobump:
     runs-on: macos-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
@@ -23,15 +28,19 @@ jobs:
         id: check
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd "$(brew --repository michael-willingham/homebrew-tap)"
+          # Get current version from cask file
+          CURRENT_VERSION=$(grep 'version' Casks/netlogo.rb | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          echo "Current version: $CURRENT_VERSION"
           
-          # Check if NetLogo is outdated
-          OUTDATED="$(brew livecheck --tap=michael-willingham/homebrew-tap --cask netlogo --quiet)"
+          # Get latest version from GitHub releases
+          LATEST_VERSION=$(gh api repos/NetLogo/NetLogo/releases/latest --jq '.tag_name' | sed 's/^v//')
+          echo "Latest version: $LATEST_VERSION"
           
-          if [ -n "$OUTDATED" ]; then
+          if [ "$CURRENT_VERSION" != "$LATEST_VERSION" ]; then
             echo "outdated=true" >> "$GITHUB_OUTPUT"
-            echo "NetLogo is outdated: $OUTDATED"
+            echo "NetLogo is outdated: $CURRENT_VERSION => $LATEST_VERSION"
           else
             echo "outdated=false" >> "$GITHUB_OUTPUT"
             echo "NetLogo is up to date"
@@ -40,10 +49,8 @@ jobs:
       - name: Bump NetLogo cask
         if: steps.check.outputs.outdated == 'true'
         env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd "$(brew --repository michael-willingham/homebrew-tap)"
-          
           # Get latest version from GitHub releases
           LATEST_VERSION=$(gh api repos/NetLogo/NetLogo/releases/latest --jq '.tag_name' | sed 's/^v//')
           echo "Latest NetLogo version: $LATEST_VERSION"
@@ -68,4 +75,4 @@ jobs:
           # Commit and push changes
           git add Casks/netlogo.rb
           git commit -m "Bump NetLogo to ${LATEST_VERSION}"
-          git push origin main
+          git push
