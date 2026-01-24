@@ -1,5 +1,7 @@
 # Michael's Homebrew Tap
 
+This was created because the public cask manifest for NetLogo is invalid. This is the only cask in here for now. In the future, I may add personal projects to this tap in the future if I want easy macOS distribution!
+
 ## How do I install these formulae?
 
 `brew install michael-willingham/tap/<formula>`
