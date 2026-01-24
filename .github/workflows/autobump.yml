@@ -27,13 +27,13 @@ jobs:
           cd "$(brew --repository michael-willingham/homebrew-tap)"
           
           # Check if NetLogo is outdated
-          OUTDATED=$(brew livecheck --tap=michael-willingham/homebrew-tap --cask netlogo --quiet)
+          OUTDATED="$(brew livecheck --tap=michael-willingham/homebrew-tap --cask netlogo --quiet)"
           
           if [ -n "$OUTDATED" ]; then
-            echo "outdated=true" >> $GITHUB_OUTPUT
+            echo "outdated=true" >> "$GITHUB_OUTPUT"
             echo "NetLogo is outdated: $OUTDATED"
           else
-            echo "outdated=false" >> $GITHUB_OUTPUT
+            echo "outdated=false" >> "$GITHUB_OUTPUT"
             echo "NetLogo is up to date"
           fi
 
