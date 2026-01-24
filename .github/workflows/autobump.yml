@@ -45,11 +45,7 @@ jobs:
           cd "$(brew --repository michael-willingham/homebrew-tap)"
           
           # Bump the cask (downloads new version, calculates SHA256, updates file)
-          brew bump-cask-pr \
-            --no-browse \
-            --no-fork \
-            --write-only \
-            netlogo
+          brew bump --cask --no-fork netlogo
           
           # Commit and push changes
           git add Casks/netlogo.rb
