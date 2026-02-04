@@ -1,19 +1,52 @@
 # Michael's Homebrew Tap
 
-This was created because the public cask manifest for NetLogo (as of January 2026) is invalid. This is the only cask in here for now. In the future, I may add personal projects to this tap for macOS distribution!
+A custom Homebrew tap for formulas and casks not available (or broken) in the default repositories.
 
-## How do I install these formulae?
+## Available Packages
 
-`brew install michael-willingham/tap/<formula>`
+### Formulas
 
-Or `brew tap michael-willingham/tap` and then `brew install <formula>`.
+| Formula | Description |
+|---------|-------------|
+| [zigflow](https://zigflow.dev/) | Temporal DSL for turning declarative YAML into production-ready workflows |
 
-Or, in a `brew bundle` `Brewfile`:
+### Casks
+
+| Cask | Description |
+|------|-------------|
+| [netlogo](https://www.netlogo.org/) | Multi-agent programmable modeling environment |
+
+## Installation
+
+```sh
+brew tap michael-willingham/tap
+```
+
+Then install any package:
+
+```sh
+brew install zigflow
+brew install --cask netlogo
+```
+
+Or install directly without tapping first:
+
+```sh
+brew install michael-willingham/tap/zigflow
+brew install michael-willingham/tap/netlogo
+```
+
+Or in a `brew bundle` `Brewfile`:
 
 ```ruby
 tap "michael-willingham/tap"
-brew "<formula>"
+brew "zigflow"
+cask "netlogo"
 ```
+
+## Auto-updates
+
+Both packages are checked daily for new upstream releases via a GitHub Actions workflow. Version bumps and checksum updates are committed automatically.
 
 ## Documentation
 
