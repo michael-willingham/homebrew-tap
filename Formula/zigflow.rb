@@ -4,6 +4,11 @@ class Zigflow < Formula
   version "0.6.11"
   license "Apache-2.0"
 
+  livecheck do
+    url "https://github.com/mrsimonemms/zigflow/releases/latest"
+    strategy :github_latest
+  end
+
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/mrsimonemms/zigflow/releases/download/v#{version}/zigflow_darwin_arm64"
